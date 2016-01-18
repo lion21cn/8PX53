@@ -1,0 +1,341 @@
+8PE53 Compiler ICE Ver 2.12 Build003 Released D:\WINGPOWR\A_WINGPOWER_ADP\A1ATW\AT8PE53\2 examples\testIce1_2\demo2.asm  2012-12-17  上午 10:44:38
+
+LOC             LINE   VALUE   SOURCE  TEXT  
+;=============================== demo2.asm Start ================================================================
+                0001                INDF      EQU       00H        
+                0002                TMR0      EQU       01H                               
+                0003                PCL       EQU       02H            
+                0004                STATUS    EQU       03H    
+                0005           ;STATUS
+                0006                C         EQU       00H                                    
+                0007                Z         EQU       02H 
+                0008                                                                              
+                0009                FSR       EQU       04H                                                    
+                0010                PA        EQU       05H          
+                0011                PB        EQU       06H          
+                0012                PCON      EQU       08H                               
+                0013                WUCON     EQU       09H                                               
+                0014                PCHBUF    EQU       0AH                                                                   
+                0015                PDCON     EQU       0BH                                                  
+                0016                ODCON     EQU       0CH                          
+                0017                PHCON     EQU       0DH                                           
+                0018                INTEN     EQU       0EH                                                      
+                0019                INTFLAG   EQU       0FH  
+                0020           ;=======================================
+                0021                ACCBUF    EQU       10H
+                0022                STABUF    EQU       11H      
+                0023                FLAG      EQU       12H           
+                0024           ;FLAG
+                0025                T_100US   EQU       00H      
+                0026                END       EQU       01H
+                0027                T_10MS    EQU       02H
+                0028                                            
+                0029                TCOUNT    EQU       13H      
+                0030                ENDCOUNT  EQU       14H
+                0031                COUNT     EQU       15H      ;21次一周期   
+                0032                COUNT1    EQU       16H      ;一周期循环100次                     
+                0033                TABBUF    EQU       17H 
+                0034           ;=======================================                     
+                0035                ORG       03FFH     
+03FF            0036   059h         GOTO      START
+                0037                ORG       08H     
+0008            0038   10h          MOVAR     ACCBUF
+0009            0039   03h          SWAPR     STATUS,0
+000A            0040   11h          MOVAR     STABUF   
+                0041                
+000B            0042   70h          MOVIA     112
+000C            0043   01h          MOVAR     TMR0
+000D            0044   12h,0        BSR       FLAG,T_100US
+000E            0045   0Fh,0        BCR       INTFLAG,0 
+000F            0046   13h          DECRSZ    TCOUNT,1
+0010            0047   014h         GOTO      $+4  
+0011            0048   64h          MOVIA     100  
+0012            0049   13h          MOVAR     TCOUNT    
+0013            0050   12h,2        BSR       FLAG,T_10MS     
+                0051                            
+0014            0052   11h          SWAPR     STABUF,0
+0015            0053   03h          MOVAR     STATUS
+0016            0054   10h          SWAPR     ACCBUF,1
+0017            0055   10h          SWAPR     ACCBUF,0      
+0018            0056                RETFIE         
+                0057           ;========================================
+                0058           ;=======================================
+                0059           PA_TAB:   
+0019            0060   02h          ADDAR     PCL,1 
+                0061           ;     RETIA     0FFH   
+001A            0062   FFh          RETIA     0FFH
+001B            0063   FFh          RETIA     0FFH   
+001C            0064   FFh          RETIA     0FFH
+001D            0065   FFh          RETIA     0FFH                          
+001E            0066   FFh          RETIA     0FFH 
+001F            0067   FFh          RETIA     0FFH  
+0020            0068   FFh          RETIA     0FFH  
+0021            0069   FFh          RETIA     0FFH           ;L1
+0022            0070   FFh          RETIA     0FFH           ;L2    
+0023            0071   FFh          RETIA     0FFH           ;L3    
+0024            0072   FFh          RETIA     0FFH           ;L4              
+0025            0073   BFh          RETIA     0BFH           ;L5
+0026            0074   7Fh          RETIA     07FH           ;L6
+0027            0075   FEh          RETIA     0FEH           ;L7    
+0028            0076   FDh          RETIA     0FDH           ;L8    
+0029            0077   FFh          RETIA     0FFH           ;L9    
+002A            0078   FFh          RETIA     0FFH           ;L10
+002B            0079   FFh          RETIA     0FFH           ;L11
+002C            0080   FFh          RETIA     0FFH           ;L12    
+002D            0081   EFh          RETIA     0EFH           ;L13  
+002E            0082   F7h          RETIA     0F7H           ;L14
+002F            0083   FBh          RETIA     0FBH           ;L15
+                0084           ;     RETIA     0CFH           ;L16 
+                0085           ;     RETIA     0DDH           ;L17
+                0086           ;     RETIA     0DDH           ;L18
+                0087           ;     RETIA     0EDH           ;L19
+                0088           ;     RETIA     0EDH           ;L20            
+0030            0089   FFh          RETIA     0FFH 
+0031            0090   FFh          RETIA     0FFH
+0032            0091   FFh          RETIA     0FFH
+0033            0092   FFh          RETIA     0FFH
+0034            0093   FFh          RETIA     0FFH   
+0035            0094   FFh          RETIA     0FFH 
+0036            0095   FFh          RETIA     0FFH    
+0037            0096   FFh          RETIA     0FFH 
+0038            0097   FFh          RETIA     0FFH       
+                0098           ;=======================================
+                0099           PB_TAB:
+0039            0100   02h          ADDAR     PCL,1    
+                0101           ;     RETIA     0FFH
+003A            0102   FFh          RETIA     0FFH 
+003B            0103   FFh          RETIA     0FFH       
+003C            0104   FFh          RETIA     0FFH
+003D            0105   FFh          RETIA     0FFH
+003E            0106   FFh          RETIA     0FFH  
+003F            0107   FFh          RETIA     0FFH 
+0040            0108   FFh          RETIA     0FFH 
+0041            0109   EFh          RETIA     0EFH            ;L1
+0042            0110   DFh          RETIA     0DFH            ;L2    
+0043            0111   BFh          RETIA     0BFH            ;L3    
+0044            0112   7Fh          RETIA     07FH            ;L4    
+0045            0113   FFh          RETIA     0FFH            ;L5
+0046            0114   FFh          RETIA     0FFH            ;L6
+0047            0115   FFh          RETIA     0FFH            ;L7    
+0048            0116   FFh          RETIA     0FFH            ;L8    
+0049            0117   FBh          RETIA     0FBH            ;L9    
+004A            0118   F7h          RETIA     0F7H            ;L10
+004B            0119   FDh          RETIA     0FDH            ;L11
+004C            0120   FEh          RETIA     0FEH            ;L12    
+004D            0121   FFh          RETIA     0FFH            ;L13   
+004E            0122   FFh          RETIA     0FFH            ;L14  
+004F            0123   FFh          RETIA     0FFH            ;L15
+                0124           ;     RETIA     10H            ;L16
+                0125           ;     RETIA     20H            ;L17
+                0126           ;     RETIA     02H            ;L18
+                0127           ;     RETIA     10H            ;L19
+                0128           ;     RETIA     02H            ;L20
+0050            0129   FFh          RETIA     0FFH
+0051            0130   FFh          RETIA     0FFH
+0052            0131   FFh          RETIA     0FFH
+0053            0132   FFh          RETIA     0FFH
+0054            0133   FFh          RETIA     0FFH  
+0055            0134   FFh          RETIA     0FFH
+0056            0135   FFh          RETIA     0FFH
+0057            0136   FFh          RETIA     0FFH 
+0058            0137   FFh          RETIA     0FFH    
+                0138                  
+                0139           ;=======================================
+                0140           START:  
+0059            0141   102h         CALL      CLRR_RAM    
+005A            0142   00h          MOVIA     00H
+005B            0143                OPTION
+005C            0144   A0h          MOVIA     0A0H
+005D            0145   08h          MOVAR     PCON  
+005E            0146   00h          MOVIA     00H
+005F            0147   09h          MOVAR     WUCON  
+0060            0148   FFh          MOVIA     0FFH             
+0061            0149   0Bh          MOVAR     PDCON  
+0062            0150   00h          MOVIA     00H
+0063            0151   0Ch          MOVAR     ODCON  
+0064            0152   FFh          MOVIA     0FFH                                                        
+0065            0153   0Dh          MOVAR     PHCON
+0066            0154   80h          MOVIA     80H  
+0067            0155   0Eh          MOVAR     INTEN  
+0068            0156   0Fh          CLRR      INTFLAG  
+0069            0157   25h          MOVIA     37
+006A            0158   15h          MOVAR     COUNT   
+006B            0159   65h          MOVIA     101
+006C            0160   16h          MOVAR     COUNT1
+006D            0161   0Ch          MOVIA     12
+006E            0162   14h          MOVAR     ENDCOUNT
+006F            0163   00h          MOVIA     00H
+0070            0164   05h          IOST      PA
+0071            0165   06h          IOST      PB
+0072            0166   5Fh          MOVIA     95
+0073            0167   01h          MOVAR     TMR0  
+0074            0168   0Eh,0        BSR       INTEN,0                
+                0169           MAIN:  
+0075            0170   12h,1        BTRSC     FLAG,END
+0076            0171   079h         GOTO      $+3     
+0077            0172   08Ah         CALL      SET_IO  
+0078            0173   085h         GOTO      MAIN_WAIT      
+0079            0174   FFh          MOVIA     0FFH
+007A            0175   06h          MOVAR     PB
+007B            0176   05h          MOVAR     PA
+007C            0177                CLRWDT
+007D            0178   12h,2        BTRSS     FLAG,T_10MS
+007E            0179   07Ch         GOTO      $-2          
+007F            0180   12h,2        BCR       FLAG,T_10MS
+0080            0181   14h          DECRSZ    ENDCOUNT,1
+0081            0182   07Ch         GOTO      $-5
+0082            0183   0Ch          MOVIA     12
+0083            0184   14h          MOVAR     ENDCOUNT
+0084            0185   12h,1        BCR       FLAG,END           
+                0186           MAIN_WAIT:     
+0085            0187   12h,0        BTRSS     FLAG,T_100US
+0086            0188   085h         GOTO      $-1                            
+0087            0189   12h,0        BCR       FLAG,T_100US  
+0088            0190                CLRWDT
+0089            0191   075h         GOTO      MAIN     
+                0192           ;=======================================     
+                0193           SET_IO:
+008A            0194   15h          DECRSZ    COUNT,1
+008B            0195   08Fh         GOTO      $+4
+008C            0196   25h          MOVIA     37
+008D            0197   15h          MOVAR     COUNT
+008E            0198                RETURN  
+                0199                
+008F            0200   16h          DECRSZ    COUNT1,1
+0090            0201   09Ah         GOTO      SET_IO_LOOP36
+0091            0202   65h          MOVIA     101
+0092            0203   16h          MOVAR     COUNT1          
+0093            0204   17h          INCR      TABBUF,1
+0094            0205   16h          MOVIA     22    
+0095            0206   17h          SUBAR     TABBUF,0
+0096            0207   03h,2        BTRSS     STATUS,Z                    
+0097            0208   09Ah         GOTO      $+3      
+0098            0209   17h          CLRR      TABBUF
+0099            0210   12h,1        BSR       FLAG,END  
+                0211           SET_IO_LOOP36:     
+009A            0212   24h          MOVIA     36   
+009B            0213   15h          SUBAR     COUNT,0     
+009C            0214   03h,2        BTRSS     STATUS,Z
+009D            0215   0A7h         GOTO      SET_IO_LOOP28
+009E            0216   07h          MOVIA     7     
+009F            0217   17h          ADDAR     TABBUF,0                          
+00A0            0218   039h         CALL      PB_TAB
+00A1            0219   06h          MOVAR     PB 
+00A2            0220   07h          MOVIA     7
+00A3            0221   17h          ADDAR     TABBUF,0
+00A4            0222   019h         CALL      PA_TAB
+00A5            0223   05h          MOVAR     PA 
+00A6            0224                RETURN      
+                0225           SET_IO_LOOP28:     
+00A7            0226   1Ch          MOVIA     28   
+00A8            0227   15h          SUBAR     COUNT,0     
+00A9            0228   03h,2        BTRSS     STATUS,Z
+00AA            0229   0B4h         GOTO      SET_IO_LOOP21
+00AB            0230   06h          MOVIA     6    
+00AC            0231   17h          ADDAR     TABBUF,0                          
+00AD            0232   039h         CALL      PB_TAB
+00AE            0233   06h          MOVAR     PB 
+00AF            0234   06h          MOVIA     6 
+00B0            0235   17h          ADDAR     TABBUF,0
+00B1            0236   019h         CALL      PA_TAB
+00B2            0237   05h          MOVAR     PA
+00B3            0238                RETURN      
+                0239           SET_IO_LOOP21:     
+00B4            0240   15h          MOVIA     21  
+00B5            0241   15h          SUBAR     COUNT,0     
+00B6            0242   03h,2        BTRSS     STATUS,Z
+00B7            0243   0C1h         GOTO      SET_IO_LOOP15
+00B8            0244   05h          MOVIA     5     
+00B9            0245   17h          ADDAR     TABBUF,0                          
+00BA            0246   039h         CALL      PB_TAB
+00BB            0247   06h          MOVAR     PB 
+00BC            0248   05h          MOVIA     5
+00BD            0249   17h          ADDAR     TABBUF,0
+00BE            0250   019h         CALL      PA_TAB
+00BF            0251   05h          MOVAR     PA
+00C0            0252                RETURN      
+                0253           SET_IO_LOOP15:     
+00C1            0254   0Fh          MOVIA     15 
+00C2            0255   15h          SUBAR     COUNT,0     
+00C3            0256   03h,2        BTRSS     STATUS,Z
+00C4            0257   0CEh         GOTO      SET_IO_LOOP10
+00C5            0258   04h          MOVIA     4     
+00C6            0259   17h          ADDAR     TABBUF,0                          
+00C7            0260   039h         CALL      PB_TAB
+00C8            0261   06h          MOVAR     PB 
+00C9            0262   04h          MOVIA     4
+00CA            0263   17h          ADDAR     TABBUF,0
+00CB            0264   019h         CALL      PA_TAB
+00CC            0265   05h          MOVAR     PA
+00CD            0266                RETURN 
+                0267           SET_IO_LOOP10:                    
+00CE            0268   0Ah          MOVIA     10             
+00CF            0269   15h          SUBAR     COUNT,0
+00D0            0270   03h,2        BTRSS     STATUS,Z
+00D1            0271   0DBh         GOTO      SET_IO_LOOP6
+00D2            0272   03h          MOVIA     3     
+00D3            0273   17h          ADDAR     TABBUF,0
+00D4            0274   039h         CALL      PB_TAB
+00D5            0275   06h          MOVAR     PB 
+00D6            0276   03h          MOVIA     3
+00D7            0277   17h          ADDAR     TABBUF,0
+00D8            0278   019h         CALL      PA_TAB
+00D9            0279   05h          MOVAR     PA
+00DA            0280                RETURN     
+                0281           SET_IO_LOOP6:                         
+00DB            0282   06h          MOVIA     6
+00DC            0283   15h          SUBAR     COUNT,0
+00DD            0284   03h,2        BTRSS     STATUS,Z
+00DE            0285   0E8h         GOTO      SET_IO_LOOP3
+00DF            0286   02h          MOVIA     2     
+00E0            0287   17h          ADDAR     TABBUF,0
+00E1            0288   039h         CALL      PB_TAB
+00E2            0289   06h          MOVAR     PB 
+00E3            0290   02h          MOVIA     2
+00E4            0291   17h          ADDAR     TABBUF,0
+00E5            0292   019h         CALL      PA_TAB
+00E6            0293   05h          MOVAR     PA
+00E7            0294                RETURN
+                0295           SET_IO_LOOP3:
+00E8            0296   03h          MOVIA     3
+00E9            0297   15h          SUBAR     COUNT,0
+00EA            0298   03h,2        BTRSS     STATUS,Z
+00EB            0299   0F5h         GOTO      SET_IO_LOOP1
+00EC            0300   01h          MOVIA     1     
+00ED            0301   17h          ADDAR     TABBUF,0
+00EE            0302   039h         CALL      PB_TAB
+00EF            0303   06h          MOVAR     PB 
+00F0            0304   01h          MOVIA     1
+00F1            0305   17h          ADDAR     TABBUF,0
+00F2            0306   019h         CALL      PA_TAB
+00F3            0307   05h          MOVAR     PA
+00F4            0308                RETURN    
+                0309           SET_IO_LOOP1:
+00F5            0310   01h          MOVIA     1
+00F6            0311   15h          SUBAR     COUNT,0
+00F7            0312   03h,2        BTRSS     STATUS,Z
+00F8            0313                RETURN
+00F9            0314   00h          MOVIA     0     
+00FA            0315   17h          ADDAR     TABBUF,0
+00FB            0316   039h         CALL      PB_TAB
+00FC            0317   06h          MOVAR     PB 
+00FD            0318   00h          MOVIA     0
+00FE            0319   17h          ADDAR     TABBUF,0
+00FF            0320   019h         CALL      PA_TAB
+0100            0321   05h          MOVAR     PA
+0101            0322                RETURN      
+                0323           ;=======================================
+                0324           CLRR_RAM:
+0102            0325   30h          MOVIA     30H
+0103            0326   10h          MOVAR     10H                         
+0104            0327   11h          MOVIA     11H         
+0105            0328   04h          MOVAR     FSR                                
+                0329           CLRR_RAM_LOOP:                                            
+0106            0330   00h          CLRR      INDF                                                         
+0107            0331   04h          INCR      FSR,1
+0108            0332   10h          DECRSZ    10H,1
+0109            0333   106h         GOTO      CLRR_RAM_LOOP                 
+010A            0334   10h          CLRR      10H                       
+010B            0335                RETURN  
+                0336           
+;=============================== demo2.asm End ================================================================

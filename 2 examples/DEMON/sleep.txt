@@ -1,0 +1,14 @@
+sleep_mode:
+       movia     00h
+       movar     rb
+	     movia	   02h     ;设定portb.1为输入端
+	     iost	   	 rb
+	     movia	   02h
+	     movar	   wucon   ;设定唤醒位
+	     movr	     rb,1
+	     movia	   02h
+	     movar     inten   ;唤醒后执行下一条指令
+	     nop
+	     sleep	
+	     nop
+	     nop

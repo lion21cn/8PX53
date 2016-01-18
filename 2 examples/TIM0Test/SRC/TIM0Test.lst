@@ -1,0 +1,130 @@
+8PE53 Compiler ICE Ver 2.12 Build003 Released   2012-12-17  下午 04:06:03
+
+LOC             LINE   VALUE   SOURCE  TEXT  
+;=============================== TIM0Test.asm Start ================================================================
+                0001           /*
+                0002           ---------------------------------------
+                0003           PRJ Name : GPIO.asm
+                0004           Brif     : A LED is conctroled by a key.
+                0005                     IOA1 connect to key
+                0006                     IOB2 connect to LED
+                0007           CPU      : AT8PE53
+                0008           ICE REV  : ICE 2.12
+                0009           
+                0010           history
+                0011           ---------------------------------------
+                0012           Date      Author    modify
+                0013           2012-1217  ZGX      first release       
+                0014           ---------------------------------------
+                0015           */
+                0016           
+                0017           ;MACRO
+                0018                INDF      EQU       00H
+                0019                TMR0      EQU       01H                               
+                0020                PCL       EQU       02H            
+                0021                STATUS    EQU       03H    
+                0022           ;STATUS                                                         
+                0023                C         EQU       00H                                    
+                0024                Z         EQU       02H 
+                0025                
+                0026                FSR       EQU       04H                                                    
+                0027                PA        EQU       05H       
+                0028                PB        EQU       06H       
+                0029                PCON      EQU       08H 
+                0030                WUCON     EQU       09H                                               
+                0031                PCHBUF    EQU       0AH                    
+                0032                PDCON     EQU       0BH                                                  
+                0033                ODCON     EQU       0CH                          
+                0034                PHCON     EQU       0DH                                           
+                0035                INTEN     EQU       0EH                                                      
+                0036                INTFLAG   EQU       0FH      
+                0037           ;======================================== 
+                0038                TIMER     EQU       07H
+                0039           
+                0040           ;======================================== 
+                0041                ORG       03FFH
+03FF            0042   00Ah         GOTO      START
+                0043                ORG       08H     
+0008            0044   0Fh          CLRR      INTFLAG
+0009            0045                RETFIE  
+                0046           ;========================================
+                0047           ;Globle varible       
+                0048                PB_BUFF   EQU       10H
+                0049           
+                0050           ;======================================== 
+                0051           
+                0052           START:  
+000A            0053   02Ah         CALL      CLRR_RAM  ;清除所有通用寄存器
+000B            0054   02h          MOVIA     02H       ;8分频
+000C            0055                OPTION
+000D            0056   A0h          MOVIA     0A0H      ;允许LVDT 允许WDT
+000E            0057   08h          MOVAR     PCON  
+000F            0058   00h          MOVIA     00H       ;禁止IOB的中断和唤醒功能
+0010            0059   09h          MOVAR     WUCON  
+0011            0060   FDh          MOVIA     0FDH      ;禁止IOA0 3 IOB0-2 允许IOA1下拉           
+0012            0061   0Bh          MOVAR     PDCON 
+0013            0062   FFh          MOVIA     0FFH      ;充许IBO0-7开漏
+0014            0063   0Ch          MOVAR     ODCON  
+0015            0064   FFh          MOVIA     0FFH      ;
+0016            0065   0Dh          MOVAR     PHCON
+0017            0066   FFh          MOVIA     0FFH
+0018            0067   05h          MOVAR     PA        ;PA 初始化为0
+0019            0068   05h          IOST      PA        ;Input mode
+001A            0069   FFh          MOVIA     0FFH      ;PB 初始化为ff
+001B            0070   06h          MOVAR     PB
+001C            0071   00h          MOVIA     00H
+001D            0072   06h          IOST      PB        ;PB 设为输出模式
+001E            0073   0Fh          CLRR      INTFLAG 
+001F            0074   00h          MOVIA     00H       ;所有中断初始化为关
+0020            0075   0Eh          MOVAR     INTEN
+0021            0076   FAh          MOVIA     250
+0022            0077   07h          MOVAR     TIMER
+0023            0078   01h          CLRR      TMR0
+                0079               
+                0080           MAIN:
+0024            0081                CLRWDT 
+0025            0082   05h,1        BTRSC     PA,1      ;PA1KEY 按为1 执行$+1，开LED
+                0083                                    ;弹起为0，跳过$+1，  
+0026            0084   06h,2        BCR       PB,2    
+0027            0085   05h,1        BTRSS     PA,1      ;弹起时关LED
+0028            0086   06h,2        BSR       PB,2      
+0029            0087   024h         GOTO      MAIN                  
+                0088           ;==========CLRR_RAM=====================                                                                
+                0089           CLRR_RAM:
+002A            0090   2Fh          MOVIA     2FH
+002B            0091   10h          MOVAR     10H                         
+002C            0092   11h          MOVIA     11H         
+002D            0093   04h          MOVAR     FSR     
+                0094           CLRR_RAM_LOOP:                                            
+002E            0095   00h          CLRR      INDF                                                         
+002F            0096   04h          INCR      FSR,1
+0030            0097   10h          DECRSZ    10H,1
+0031            0098   02Eh         GOTO      CLRR_RAM_LOOP                 
+0032            0099   10h          CLRR      10H                       
+0033            0100                RETURN  
+                0101           ;======================================== 
+                0102           DELAY_500MS:
+0034            0103                CLRWDT
+0035            0104   C8h          MOVIA     200;
+0036            0105   16h          MOVAR     16H
+0037            0106   C8h          MOVIA     200;
+0038            0107   15h          MOVAR     15H
+                0108           LOOP_1:
+0039            0109   03Eh         CALL LOOP_0
+003A            0110   16h          DECRSZ    16H,1     
+003B            0111   039h         GOTO LOOP_1
+003C            0112   16h          CLRR 16H
+003D            0113                RETURN
+                0114           LOOP_0:
+003E            0115                CLRWDT
+003F            0116                NOP
+0040            0117                NOP
+0041            0118                NOP
+0042            0119                NOP
+0043            0120                NOP
+0044            0121   15h          DECRSZ    15H,1
+0045            0122   03Eh         GOTO LOOP_0                                      
+0046            0123   15h          CLRR 15H
+0047            0124                RETURN
+                0125           ;========================================                                                     
+;=============================== TIM0Test.asm End ================================================================
